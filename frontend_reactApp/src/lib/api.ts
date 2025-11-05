@@ -117,18 +117,24 @@ export const api = {
   },
 
   async updateCurrentUser(updates: {
-    first_name?: string;
-    last_name?: string;
-    email?: string;
-    phone?: string;
-    date_of_birth?: string;
-    [key: string]: any;
-  }) {
-    return request<any>(`/users/me`, {
-      method: "PATCH",
-      body: JSON.stringify(updates),
-    });
-  },
+  first_name?: string;
+  last_name?: string;
+  email?: string;
+  phone?: string;
+  date_of_birth?: string;
+  blood_type?: string;
+  allergies?: string;
+  medical_conditions?: string;
+  emergency_contact_name?: string;
+  emergency_contact_relationship?: string;
+  emergency_contact_phone?: string;
+}) {
+  return request<any>(`/users/me`, {
+    method: "PATCH",
+    body: JSON.stringify(updates),
+  });
+},
+
 
   // --- Clinics ---
   async listClinics(params?: { q?: string; min_rating?: number }) {

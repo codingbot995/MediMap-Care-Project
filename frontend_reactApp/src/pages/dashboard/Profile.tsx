@@ -94,7 +94,8 @@ const Profile = () => {
       setUser(prev => (prev ? { ...prev, ...formData } : null));
       setIsEditing(false);
       Keyboard.dismiss();
-      await api.updateCurrentUser(formData)
+      await api.updateCurrentUser(formData);
+
       Alert.alert("Success", "Profile updated successfully");
     } catch {
       Alert.alert("Error", "Failed to update profile");

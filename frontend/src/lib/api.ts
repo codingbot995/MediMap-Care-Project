@@ -56,6 +56,8 @@ async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
     ...(options.headers || {}),
   };
   if (token) headers['Authorization'] = `Bearer ${token}`;
+  //console.log("Auth token being sent:", token);
+
 
   const res = await fetch(`${API_BASE_URL}${path}`, {
     ...options,
@@ -97,6 +99,15 @@ export const api = {
   getCurrentUser() {
     return request<User>(`/users/me`);
   },
+
+
+  // inside export const api = { ... }
+updateUserProfile(updates: Partial<{ name: string; email: string; phone?: string; password?: string }>) {
+  return request<User>(`/users/me`, {
+    method: 'PATCH',
+    body: JSON.stringify(updates),
+  });
+},
 
   // Clinics
   listClinics(params?: { q?: string; min_rating?: number }) {

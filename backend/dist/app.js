@@ -16,6 +16,14 @@ app.use(express_1.default.json());
 app.use(express_1.default.urlencoded({ extended: true }));
 const index_1 = __importDefault(require("./routes/index"));
 const directions_1 = __importDefault(require("./routes/directions"));
+
+import cors from 'cors';
+
+app.use(cors({
+  origin: ['http://localhost:3000', 'exp://127.0.0.1:19000'], // add your Expo/React URL
+  credentials: true
+}));
+
 app.use('/api', index_1.default);
 app.use('/api/directions', directions_1.default);
 app.use((err, req, res, next) => {

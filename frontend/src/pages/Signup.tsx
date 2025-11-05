@@ -23,15 +23,28 @@ const Signup = () => {
     e.preventDefault();
     try {
       const role = userType === "clinic" ? "clinic" : "user";
-      const { token } = await api.register({
-        name: formData.name,
-        email: formData.email,
-        phone: formData.phone,
-        password: formData.password,
-        role,
-      });
-      setAuthToken(token);
-      navigate("/dashboard/find-clinics");
+      const res = await fetch("http://localhost:8001/api/users", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({
+    name: formData.name,
+    email: formData.email,
+    phone: formData.phone,
+    password: formData.password,
+    role,
+  }),
+});
+
+if (!res.ok) {
+  const err = await res.json();
+  throw new Error(err.error || "Signup failed");
+}
+
+const data = await res.json();
+console.log("✅ User saved to Supabase:", data);
+
+navigate("/dashboard/find-clinics");
+
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : "Signup failed";
       alert(message);

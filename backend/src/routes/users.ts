@@ -156,6 +156,35 @@ router.patch('/me', authMiddleware, async (req: AuthenticatedRequest, res: Respo
   }
 });
 
+// --- Direct Supabase insert (for debugging or manual save) ---
+router.post("/", async (req: Request, res: Response): Promise<Response> => {
+  try {
+    const { name, email, phone, password, role } = req.body;
+    if (!name || !email || !password) {
+      return res.status(400).json({ error: "Name, email, and password are required" });
+    }
+
+    // Check if user already exists
+    const existingUser = await findUserByEmail(email);
+    if (existingUser) {
+      return res.status(409).json({ error: "User already exists" });
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const newUser = await createUserDb({
+      name,
+      email,
+      phone: phone || null,
+      password: hashedPassword,
+      role: role || "user",
+    });
+
+    return res.status(201).json({ message: "User created successfully", user: newUser });
+  } catch (error) {
+    console.error("Error inserting user:", error);
+    return res.status(500).json({ error: "Internal server error" });
+  }
+});
 
 
 export default router;
