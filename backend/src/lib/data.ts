@@ -32,7 +32,7 @@ export async function createUserDb(payload: {
   role?: string;
 }) {
   const { data, error } = await serviceClient!
-    .from("users")
+    .from("user_profiles")
     .insert({
       name: payload.name,
       email: payload.email,

@@ -113,7 +113,18 @@ router.get('/me', authMiddleware, async (req: AuthenticatedRequest, res: Respons
 router.patch('/me', authMiddleware, async (req: AuthenticatedRequest, res: Response): Promise<Response> => {
   try {
     const userId = req.auth!.userId;
-    const updates = req.body;
+   const updates = {
+  name: req.body.name,
+  email: req.body.email,
+  phone: req.body.phone,
+  bloodtype: req.body.bloodType,
+  allergies: req.body.allergies,
+  conditions: req.body.conditions,
+  emergencyname: req.body.emergencyName,
+  emergencyrelation: req.body.emergencyRelation,
+  emergencyphone: req.body.emergencyPhone
+};
+
 
     console.log('\n=== PATCH /me Debug Info ===');
     console.log('User ID:', userId);
